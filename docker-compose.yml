@@ -1,0 +1,127 @@
+services:
+  user-service-postgres:
+    image: postgres:latest
+    container_name: user-service-postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=users
+    ports:
+      - "5000:5432"
+    restart: unless-stopped
+    networks:
+      - databases
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  
+  user-service:
+    image: ghcr.io/Monoling0/user-service:main
+    platform: linux/amd64
+    container_name: user-service
+    networks:
+      - internal
+      - kafka
+      - databases
+    depends_on:
+      user-service-postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    ports:
+      - "5001:5001"
+    environment:
+      Infrastructure__Persistence__Postgres__Host: user-service-postgres
+      Infrastructure__Persistence__Postgres__Database: users
+      Infrastructure__Persistence__Postgres__Username: user
+      Infrastructure__Persistence__Postgres__Password: pass
+      Presentation__Kafka__Host: kafka:9094
+  
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    restart: unless-stopped
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - kafka
+  
+  kafka:
+    image: wurstmeister/kafka:latest
+    restart: unless-stopped
+    environment:
+      KAFKA_LOG_DIRS: /kafka-data
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENERS: EXTERNAL://:9092,INTERNAL://:9094
+      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://127.0.0.1:8001,INTERNAL://kafka:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CREATE_TOPICS: >
+        user_events:1:1,
+        course_events:1:1,
+        progress_events:1:1,
+        feed_events:1:1,
+        notification_events:1:1,
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka
+    volumes:
+      - monolingo-kafka-data:/kafka-data
+    ports:
+      - '8001:9092'
+  
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    networks:
+      - kafka
+    ports:
+      - "8003:8080"
+    volumes:
+      - ./src/Presentation/Kafka/protos:/schemas
+    environment:
+      kafka.clusters.0.name: kafka
+      kafka.clusters.0.bootstrapServers: kafka:9094
+      kafka.clusters.0.defaultKeySerde: ProtobufFile
+      kafka.clusters.0.defaultValueSerde: ProtobufFile
+      
+      kafka.clusters.0.serde.0.name: ProtobufFile
+      kafka.clusters.0.serde.0.properties.protobufFilesDir: /schemas/
+      
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.user_events: users.UserEventKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.course_events: courses.CourseEventKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.progress_events: progress.ProgressEventKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.feed_events: feed.FeedEventKey
+      kafka.clusters.0.serde.0.properties.protobufMessageNameForKeyByTopic.notification_events: notifications.NotificationEventKey
+      
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.user_events: users.UserEventValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.course_events: courses.CourseEventValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.progress_events: progress.ProgressEventValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.feed_events: feed.FeedEventValue
+      kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.notification_events: notifications.NotificationEventValue
+        
+        
+
+networks:
+  public:
+    driver: bridge
+  internal:
+    driver: bridge
+    internal: true
+  kafka:
+    driver: bridge
+  databases:
+    driver: bridge
+    internal: true
+
+volumes:
+  monolingo-kafka-data:
