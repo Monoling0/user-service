@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\Repositories\Postgres\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="FluentMigrator" />
       <PackageReference Include="FluentMigrator.Extensions.Postgres" />
       <PackageReference Include="FluentMigrator.Runner" />
       <PackageReference Include="Microsoft.Extensions.Hosting" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\UserService.Application.Abstractions\UserService.Application.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>
