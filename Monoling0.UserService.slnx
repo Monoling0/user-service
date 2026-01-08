@@ -1,8 +1,0 @@
-﻿<Solution>
-  <Folder Name="/src/" />
-  <Folder Name="/tests/" />
-  <Project Path="src\Application\Application.csproj" Type="Classic C#" />
-  <Project Path="src\Infrastructure\Infrastructure.csproj" Type="Classic C#" />
-  <Project Path="src\Monoling0.UserService\Monoling0.UserService.csproj" Type="Classic C#" />
-  <Project Path="src\Presentation\Grpc\Grpc.csproj" Type="Classic C#" />
-</Solution>

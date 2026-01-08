@@ -1,4 +1,4 @@
-﻿namespace Monoling0.UserService;
+namespace UserService;
 
 public static class Program
 {

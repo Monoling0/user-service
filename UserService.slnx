@@ -1,0 +1,12 @@
+﻿<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/tests/" />
+  <Project Path="src\Application\UserService.Application.Abstractions\UserService.Application.Abstractions.csproj" Type="Classic C#" />
+  <Project Path="src\Application\UserService.Application.Contracts\UserService.Application.Contracts.csproj" Type="Classic C#" />
+  <Project Path="src\Application\UserService.Application.Models\UserService.Application.Models.csproj" Type="Classic C#" />
+  <Project Path="src\Application\UserService.Application\UserService.Application.csproj" Type="Classic C#" />
+  <Project Path="src\Infrastructure\Infrastructure.csproj" Type="Classic C#" />
+  <Project Path="src\Presentation\Grpc\Grpc.csproj" Type="Classic C#" />
+  <Project Path="src\Presentation\Kafka\Kafka.csproj" Type="Classic C#" />
+  <Project Path="src\UserService\UserService.csproj" Type="Classic C#" />
+</Solution>
