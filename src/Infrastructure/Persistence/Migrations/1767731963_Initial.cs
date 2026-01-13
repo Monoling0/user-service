@@ -61,11 +61,10 @@ public class InitialMigration : IMigration
         {
             SqlStatement = """
                            drop table if exists followers;
-                           drop table if exists account_roles;
                            drop table if exists student_profiles;
-                           drop table if exists roles;
-                           drop table if exists account_passwords;
                            drop table if exists accounts;
+                           drop table if exists account_passwords;
+                           drop table if exists roles;
                            """,
         });
     }
