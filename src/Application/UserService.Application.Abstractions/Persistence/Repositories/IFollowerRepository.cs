@@ -4,7 +4,16 @@ namespace UserService.Application.Abstractions.Persistence.Repositories;
 
 public interface IFollowerRepository
 {
-    Task AddFollower(
+    Task AddFollowerAsync(
         AddFollowerRepositoryRequest request,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<bool> IsSubscribedAsync(
+        long followerId,
+        long followeeId,
+        CancellationToken cancellationToken);
+
+    IAsyncEnumerable<long> GetAllFollowersIdsAsync(
+        GetAllFollowersRepositoryRequest request,
+        CancellationToken cancellationToken);
 }

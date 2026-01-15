@@ -13,11 +13,11 @@ public class InitialMigration : IMigration
         context.Expressions.Add(new ExecuteSqlStatementExpression
         {
             SqlStatement = """
-                           create table if not exists roles
-                           (
-                               role_id              bigint primary key generated always as identity,
-                               code                 text unique not null
-                           );
+                           do $$ begin
+                               create type role as enum ('admin', 'creator', 'student');
+                           exception
+                               when duplicate_object then null;
+                           end $$;
 
                            create table if not exists account_passwords
                            (
@@ -29,7 +29,7 @@ public class InitialMigration : IMigration
                            (
                                account_id           bigint primary key generated always as identity,
 
-                               role_id              bigint not null references roles (role_id),
+                               role                 role not null
                                password_id          bigint not null references account_passwords (password_id),
                                email                text unique not null,
                                account_created_at   timestamp with time zone not null,

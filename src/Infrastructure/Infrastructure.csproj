@@ -10,7 +10,10 @@
       <PackageReference Include="FluentMigrator" />
       <PackageReference Include="FluentMigrator.Extensions.Postgres" />
       <PackageReference Include="FluentMigrator.Runner" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
       <PackageReference Include="Microsoft.Extensions.Hosting" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+      <PackageReference Include="Npgsql" />
     </ItemGroup>
 
     <ItemGroup>

@@ -7,7 +7,11 @@
     <PackageVersion Include="FluentMigrator" Version="7.2.0" />
     <PackageVersion Include="FluentMigrator.Extensions.Postgres" Version="7.2.0" />
     <PackageVersion Include="FluentMigrator.Runner" Version="7.2.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.2" />
+    <PackageVersion Include="Npgsql" Version="10.0.1" />
     <PackageVersion Include="SourceKit.Analyzers.Collections" Version="1.0.50" />
     <PackageVersion Include="SourceKit.Analyzers.Enumerable" Version="1.0.50" />
     <PackageVersion Include="SourceKit.Analyzers.MemberAccessibility" Version="1.0.31" />
@@ -15,5 +19,6 @@
     <PackageVersion Include="SourceKit.Analyzers.Properties" Version="1.0.50" />
     <PackageVersion Include="Itmo.Dev.Editorconfig" Version="1.0.12" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
+    <PackageVersion Include="System.Linq.Async" Version="7.0.0" />
   </ItemGroup>
 </Project>

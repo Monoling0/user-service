@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\UserService.Application.Abstractions\UserService.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\UserService.Application.Contracts\UserService.Application.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Linq.Async" />
+    </ItemGroup>
+
 </Project>

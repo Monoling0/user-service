@@ -6,5 +6,14 @@ public interface IAccountPasswordRepository
 {
     Task<long> SavePasswordAsync(
         SavePasswordRepositoryRequest request,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<string?> GetPasswordHashAsync(
+        long passwordId,
+        CancellationToken cancellationToken);
+
+    Task<bool> UpdatePassword(
+        long passwordId,
+        string newHash,
+        CancellationToken cancellationToken);
 }

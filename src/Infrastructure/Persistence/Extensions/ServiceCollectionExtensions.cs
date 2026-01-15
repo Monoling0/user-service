@@ -16,7 +16,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAccountPasswordRepository, AccountPasswordRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IFollowerRepository, FollowerRepository>();
-        services.AddScoped<IRoleRepository, IRoleRepository>();
         services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
 
         return services;

@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Accounts\" />
+      <ProjectReference Include="..\UserService.Application.Models\UserService.Application.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" />
     </ItemGroup>
 
 </Project>
