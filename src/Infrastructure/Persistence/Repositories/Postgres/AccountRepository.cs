@@ -147,7 +147,8 @@ public class AccountRepository : IAccountRepository
     {
         const string sql = """
                            update accounts
-                           set email = coalesce(:new_email, email)
+                           set email = coalesce(:new_email, email),
+                               account_updated_at = :updated_at
                            where (account_id = :account_id)
                            """;
 
@@ -155,6 +156,7 @@ public class AccountRepository : IAccountRepository
         {
             new NpgsqlParameter<long>("account_id", request.AccountId),
             new NpgsqlParameter<string?>("new_email", request.Email.HasValue ? request.Email.Value : null),
+            new NpgsqlParameter<DateTimeOffset>("updated_at", DateTimeOffset.Now.ToUniversalTime()),
         };
 
         await using NpgsqlConnection connection = await _dataSource.OpenConnectionAsync(cancellationToken);
