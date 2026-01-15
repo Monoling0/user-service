@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package accounts;
+
+option csharp_namespace = "Accounts.UserService.Contracts";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+service UserService {
+  rpc RegisterStudent(RegisterStudentRequest) returns (RegisterStudentResponse);
+  rpc AddCreator(AddCreatorRequest) returns (AddCreatorResponse);
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
+  rpc ExistsAccount(ExistsAccountRequest) returns (ExistsAccountResponse);
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+  rpc GetStudentProfileData(GetStudentProfileDataRequest) returns (GetStudentProfileDataResponse);
+  rpc GetPasswordHash(GetPasswordHashRequest) returns (GetPasswordHashResponse);
+  rpc GetAllAccounts(GetAllAccountsRequest) returns (GetAllAccountsResponse);
+  rpc GetAllStudentProfiles(GetAllStudentProfilesRequest) returns (GetAllStudentProfilesResponse);
+  rpc GetFollowers(GetFollowersRequest) returns (GetFollowersResponse);
+  rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountResponse);
+  rpc UpdateStudentProfile(UpdateStudentProfileRequest) returns (UpdateStudentProfileResponse);
+}
+
+message RegisterStudentRequest {
+  string password_hash = 1;
+  string email = 2;
+  string nickname = 3;
+  google.protobuf.StringValue profile_photo_url = 4;
+}
+
+message RegisterStudentResponse {
+  int64 account_id = 1;
+}
+
+message AddCreatorRequest {
+  string password_hash = 1;
+  string email = 2;
+}
+
+message AddCreatorResponse {
+}
+
+message CreateSubscriptionRequest {
+  int64 follower_id = 1;
+  int64 followee_id = 2;
+}
+
+message CreateSubscriptionResponse {
+}
+
+message ExistsAccountRequest {
+  int64 account_id = 1;
+}
+
+message ExistsAccountResponse {
+  bool exists = 1;
+}
+
+message GetAccountRequest {
+  int64 account_id = 1;
+}
+
+message GetAccountResponse {
+  Account account = 1;
+}
+
+message GetStudentProfileDataRequest {
+  int64 account_id = 1;
+}
+
+message GetStudentProfileDataResponse {
+  StudentProfile student_profile = 1;
+}
+
+message GetPasswordHashRequest {
+  int64 password_id = 1;
+}
+
+message GetPasswordHashResponse {
+  string password_hash = 1;
+}
+
+message GetAllAccountsRequest {
+  int32 page_size = 1;
+  optional Role role = 2;
+  PageToken page_token = 3;
+}
+
+message GetAllAccountsResponse {
+  repeated Account accounts = 1;
+  PageToken page_token = 2;
+}
+
+message GetAllStudentProfilesRequest {
+  int32 page_size = 1;
+  PageToken page_token = 2;
+}
+
+message GetAllStudentProfilesResponse {
+  repeated StudentProfile student_profiles = 1;
+  PageToken page_token = 2;
+}
+
+message GetFollowersRequest {
+  int64 student_id = 1;
+  int32 page_size = 2;
+  PageToken page_token = 3;
+}
+
+message GetFollowersResponse {
+  repeated StudentProfile student_profiles = 1;
+  PageToken page_token = 2;
+}
+
+message UpdateAccountRequest {
+  int64 account_id = 1;
+  bool is_set_password_hash = 2;
+  google.protobuf.StringValue password_hash = 3;
+  bool is_set_email = 4;
+  google.protobuf.StringValue email = 5;
+}
+
+message UpdateAccountResponse {
+}
+
+message UpdateStudentProfileRequest {
+  int64 account_id = 1;
+  bool is_set_nickname = 2;
+  google.protobuf.StringValue nickname = 3;
+  bool is_set_profile_photo_url = 4;
+  google.protobuf.StringValue profile_photo_url = 5;
+}
+
+message UpdateStudentProfileResponse {
+}
+
+message Account {
+  int64 account_id = 1;
+  Role role = 2;
+  int64 password_id = 3;
+  string email = 4;
+  google.protobuf.Timestamp account_created_at = 5;
+  google.protobuf.Timestamp account_updated_at = 6;
+}
+
+enum Role {
+  ROLE_UNSPECIFIED = 0;
+  ROLE_ADMIN = 1;
+  ROLE_CREATOR = 2;
+  ROLE_STUDENT = 3;
+}
+
+message StudentProfile {
+  int64 account_id = 1;
+  string nickname = 2;
+  google.protobuf.StringValue profile_photo_url = 3;
+}
+
+message PageToken {
+  int64 last_seen_id = 1;
+}

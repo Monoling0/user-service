@@ -7,7 +7,7 @@ public class GetAllAccounts
 {
     public record Request(
         int PageSize,
-        Roles? RoleCode,
+        Roles? Role,
         PageToken? PageToken);
 
     public abstract record Result

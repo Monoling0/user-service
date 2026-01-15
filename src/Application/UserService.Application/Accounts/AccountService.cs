@@ -188,7 +188,7 @@ public class AccountService : IUserService
         long? lastSeenId = request.PageToken?.LastSeenId;
         var getAllAccountsRepositoryRequest = new GetAllAccountsRepositoryRequest(
             request.PageSize,
-            request.RoleCode,
+            request.Role,
             lastSeenId);
         List<Account> page =
             await _accountRepository
