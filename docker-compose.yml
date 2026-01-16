@@ -12,14 +12,14 @@ services:
     networks:
       - databases
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U user" ]
+      test: [ "CMD-SHELL", "pg_isready -U user -d users" ]
       interval: 5s
       timeout: 5s
       retries: 5
       start_period: 10s
   
   user-service:
-    image: ghcr.io/Monoling0/user-service:main
+    image: ghcr.io/monoling0/user-service:main
     platform: linux/amd64
     container_name: user-service
     networks:

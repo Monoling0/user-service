@@ -29,7 +29,7 @@ public class InitialMigration : IMigration
                            (
                                account_id           bigint primary key generated always as identity,
 
-                               role                 role not null
+                               role                 role not null,
                                password_id          bigint not null references account_passwords (password_id),
                                email                text unique not null,
                                account_created_at   timestamp with time zone not null,

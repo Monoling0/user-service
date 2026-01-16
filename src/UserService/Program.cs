@@ -28,7 +28,8 @@ public static class Program
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
         builder.Configuration
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddEnvironmentVariables();
 
         builder.Services
             .AddOptions<PostgresOptions>()
