@@ -33,12 +33,6 @@ services:
         condition: service_started
     ports:
       - "5001:5001"
-    environment:
-      Infrastructure__Persistence__Postgres__Host: user-service-postgres
-      Infrastructure__Persistence__Postgres__Database: users
-      Infrastructure__Persistence__Postgres__Username: user
-      Infrastructure__Persistence__Postgres__Password: pass
-      Presentation__Kafka__Host: kafka:9094
   
   zookeeper:
     image: wurstmeister/zookeeper:latest
