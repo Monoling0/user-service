@@ -137,12 +137,7 @@ message UpdateStudentProfileRequest {
   bool is_set_nickname = 2;
   google.protobuf.StringValue nickname = 3;
   bool is_set_profile_photo_url = 4;
-  ProfilePhotoUrl profile_photo_url = 5;
-}
-
-message ProfilePhotoUrl {
-  bool has_value = 1;
-  google.protobuf.StringValue profile_photo_url = 2;
+  google.protobuf.StringValue profile_photo_url = 5;
 }
 
 message UpdateStudentProfileResponse {

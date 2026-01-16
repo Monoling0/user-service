@@ -34,6 +34,19 @@ services:
     ports:
       - "5001:5001"
   
+  gateway:
+    image: ghcr.io/monoling0/gateway:main
+    platform: linux/amd64
+    container_name: gateway
+    networks:
+      - public
+      - internal
+    depends_on:
+      user-service:
+        condition: service_started
+    ports:
+      - "5002:5002"
+  
   zookeeper:
     image: wurstmeister/zookeeper:latest
     restart: unless-stopped

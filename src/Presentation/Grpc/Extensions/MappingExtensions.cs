@@ -10,7 +10,7 @@ using StudentProfile = UserService.Application.Models.StudentProfiles.StudentPro
 
 namespace Grpc.Extensions;
 
-public static class ApplicationEntitiesExtensions
+public static class MappingExtensions
 {
     public static GrpcAccount ToProto(this Account account)
     {

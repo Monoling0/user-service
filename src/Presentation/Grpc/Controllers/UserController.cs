@@ -326,7 +326,7 @@ public class UserController : GrpcUserService.UserServiceBase
         var updateStudentProfileServerRequest = new UpdateStudentProfile.Request(
             request.AccountId,
             request.Nickname ?? default(Optional<string>),
-            request.ProfilePhotoUrl.HasValue ? request.ProfilePhotoUrl.ProfilePhotoUrl_ : default(Optional<string?>));
+            request.IsSetProfilePhotoUrl ? request.ProfilePhotoUrl : default(Optional<string?>));
 
         UpdateStudentProfile.Result updateStudentProfileServerResult = await _accountService.UpdateStudentProfileAsync(
             updateStudentProfileServerRequest,
