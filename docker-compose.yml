@@ -102,7 +102,22 @@ services:
       kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.progress_events: progress.ProgressEventValue
       kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.feed_events: feed.FeedEventValue
       kafka.clusters.0.serde.0.properties.protobufMessageNameByTopic.notification_events: notifications.NotificationEventValue
-        
+  
+  pgadmin:
+    container_name: pgadmin-monoling0
+    image: dpage/pgadmin4:latest
+    hostname: pgadmin
+    restart: unless-stopped
+    ports:
+      - "5010:80"
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=pass
+      - PGADMIN_DEFAULT_EMAIL=postgres@postgres.com
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    networks:
+      - databases
+      - public
         
 
 networks:

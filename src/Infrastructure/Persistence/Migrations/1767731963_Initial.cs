@@ -51,6 +51,29 @@ public class InitialMigration : IMigration
                                created_at           timestamp with time zone not null,
                                primary key (follower_id, followee_id)
                            );
+                           
+                           do $$
+                           begin
+                               if not exists (select 1 from accounts where email = 'admin@example.com') then
+                                   insert into account_passwords (password_hash)
+                                   values ('$2a$12$VW5350hCynMdigyR80A2leJbvNSF4A2.QlqLQGIP3UA.kbX.uDNau');
+                           
+                                   insert into accounts (role, password_id, email, account_created_at, account_updated_at)
+                                   values (
+                                       'admin',
+                                       currval('account_passwords_password_id_seq'),
+                                       'admin@example.com',
+                                       now(),
+                                       now()
+                                   );
+                           
+                                   insert into student_profiles (account_id, nickname)
+                                   values (
+                                       currval('accounts_account_id_seq'),
+                                       'admin'
+                                   );
+                               end if;
+                           end $$;
                            """,
         });
     }
