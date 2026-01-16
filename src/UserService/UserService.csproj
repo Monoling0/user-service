@@ -9,17 +9,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Update="appsettings.*.json">
-            <DependentUpon>appsettings.json</DependentUpon>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Application\UserService.Application\UserService.Application.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
       <ProjectReference Include="..\Presentation\Grpc\Grpc.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
