@@ -39,6 +39,7 @@ message AddCreatorRequest {
 }
 
 message AddCreatorResponse {
+  int64 account_id = 1;
 }
 
 message CreateSubscriptionRequest {
@@ -83,8 +84,14 @@ message GetPasswordHashResponse {
 
 message GetAllAccountsRequest {
   int32 page_size = 1;
-  optional Role role = 2;
-  PageToken page_token = 3;
+  Ids ids = 2;
+  optional Role role = 3;
+  PageToken page_token = 4;
+}
+
+message Ids {
+  bool has_value = 1;
+  repeated int64 ids = 2;
 }
 
 message GetAllAccountsResponse {
@@ -94,7 +101,8 @@ message GetAllAccountsResponse {
 
 message GetAllStudentProfilesRequest {
   int32 page_size = 1;
-  PageToken page_token = 2;
+  Ids ids = 2;
+  PageToken page_token = 3;
 }
 
 message GetAllStudentProfilesResponse {
@@ -129,7 +137,12 @@ message UpdateStudentProfileRequest {
   bool is_set_nickname = 2;
   google.protobuf.StringValue nickname = 3;
   bool is_set_profile_photo_url = 4;
-  google.protobuf.StringValue profile_photo_url = 5;
+  ProfilePhotoUrl profile_photo_url = 5;
+}
+
+message ProfilePhotoUrl {
+  bool has_value = 1;
+  google.protobuf.StringValue profile_photo_url = 2;
 }
 
 message UpdateStudentProfileResponse {
