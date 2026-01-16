@@ -10,7 +10,7 @@ public class AddCreator
     {
         private Result() { }
 
-        public sealed record Success : Result;
+        public sealed record Success(long AccountId) : Result;
 
         public sealed record EmailAlreadyExists : Result;
     }

@@ -7,6 +7,7 @@ public class GetAllStudentProfiles
 {
     public record Request(
         int PageSize,
+        long[]? Ids,
         PageToken? PageToken);
 
     public abstract record Result

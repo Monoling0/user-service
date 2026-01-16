@@ -93,7 +93,8 @@ public class AccountRepository : IAccountRepository
         const string sql = """
                            select account_id, role, password_id, email, account_created_at, account_updated_at
                            from accounts
-                           where (:last_seen_id is null or account_id > :last_seen_id)
+                           where (:ids is null or account_id = any(:ids))
+                               and (:last_seen_id is null or account_id > :last_seen_id)
                            order by account_id
                            limit :limit
                            """;
@@ -102,6 +103,7 @@ public class AccountRepository : IAccountRepository
         {
             new NpgsqlParameter<long?>("last_seen_id", request.LastSeenId),
             new NpgsqlParameter<int>("limit", request.PageSize),
+            new NpgsqlParameter<long[]?>("ids", request.Ids),
         };
 
         await using NpgsqlConnection connection =

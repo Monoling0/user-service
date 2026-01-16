@@ -2,7 +2,7 @@ using UserService.Application.Contracts.Operations;
 
 namespace UserService.Application.Contracts;
 
-public interface IUserService
+public interface IAccountService
 {
     Task<RegisterStudent.Result> RegisterStudentAsync(
         RegisterStudent.Request request,

@@ -1,4 +1,5 @@
 using UserService.Application.Models.Common;
+using UserService.Application.Models.StudentProfiles;
 
 namespace UserService.Application.Contracts.Operations;
 
@@ -14,7 +15,7 @@ public class GetFollowers
         private Result() { }
 
         public sealed record Success(
-            IList<long> StudentProfiles,
+            IList<StudentProfile> StudentProfiles,
             PageToken? PageToken) : Result;
 
         public sealed record InvalidPageSize : Result;

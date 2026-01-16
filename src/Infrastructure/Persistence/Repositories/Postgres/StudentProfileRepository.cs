@@ -70,7 +70,8 @@ public class StudentProfileRepository : IStudentProfileRepository
         const string sql = """
                            select account_id, nickname, profile_photo_url
                            from student_profiles
-                           where (:last_seen_id is null or account_id > :last_seen_id)
+                           where (:ids is null or account_id = any(:ids))
+                               and (:last_seen_id is null or account_id > :last_seen_id)
                            order by account_id
                            limit :limit
                            """;
@@ -79,6 +80,7 @@ public class StudentProfileRepository : IStudentProfileRepository
         {
             new NpgsqlParameter<long?>("last_seen_id", request.LastSeenId),
             new NpgsqlParameter<int>("limit", request.PageSize),
+            new NpgsqlParameter<long[]?>("ids", request.Ids),
         };
 
         await using NpgsqlConnection connection =

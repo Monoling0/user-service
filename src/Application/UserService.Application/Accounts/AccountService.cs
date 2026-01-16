@@ -9,7 +9,7 @@ using UserService.Application.Models.StudentProfiles;
 
 namespace UserService.Application.Accounts;
 
-public class AccountService : IUserService
+public class AccountService : IAccountService
 {
     private const int MinimalPageSize = 1;
 
@@ -98,11 +98,12 @@ public class AccountService : IUserService
             passwordId,
             request.Email,
             createdAt);
-        await _accountRepository.CreateAsync(createAccountRepositoryRequest, cancellationToken);
+
+        long accountId = await _accountRepository.CreateAsync(createAccountRepositoryRequest, cancellationToken);
 
         transaction.Complete();
 
-        return new AddCreator.Result.Success();
+        return new AddCreator.Result.Success(accountId);
     }
 
     public async Task<CreateSubscription.Result> CreateSubscriptionAsync(
@@ -188,6 +189,7 @@ public class AccountService : IUserService
         long? lastSeenId = request.PageToken?.LastSeenId;
         var getAllAccountsRepositoryRequest = new GetAllAccountsRepositoryRequest(
             request.PageSize,
+            request.Ids,
             request.Role,
             lastSeenId);
         List<Account> page =
@@ -216,6 +218,7 @@ public class AccountService : IUserService
         long? lastSeenId = request.PageToken?.LastSeenId;
         var getAllStudentProfilesRepositoryRequest = new GetAllStudentProfilesRepositoryRequest(
             request.PageSize,
+            request.Ids,
             lastSeenId);
         List<StudentProfile> page =
             await _studentProfileRepository
@@ -240,21 +243,37 @@ public class AccountService : IUserService
             return new GetFollowers.Result.InvalidPageSize();
         }
 
-        long? lastSeenId = request.PageToken?.LastSeenId;
+        using var transaction = new TransactionScope(
+            TransactionScopeOption.Required,
+            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
+            TransactionScopeAsyncFlowOption.Enabled);
+
         var getAllFollowersRepositoryRequest = new GetAllFollowersRepositoryRequest(
             request.StudentId,
             request.PageSize,
-            lastSeenId);
-        List<long> page =
+            request.PageToken?.LastSeenId);
+        List<long> ids =
             await _followerRepository
                 .GetAllFollowersIdsAsync(getAllFollowersRepositoryRequest, cancellationToken)
                 .ToListAsync(cancellationToken);
-        if (page.Count < request.PageSize)
+
+        var getAllStudentProfilesRequest = new GetAllStudentProfilesRepositoryRequest(
+            request.PageSize,
+            ids.ToArray(),
+            request.PageToken?.LastSeenId);
+        List<StudentProfile> page =
+            await _studentProfileRepository
+                .GetAllStudentProfilesAsync(getAllStudentProfilesRequest, cancellationToken)
+                .ToListAsync(cancellationToken);
+
+        if (ids.Count < request.PageSize)
         {
             return new GetFollowers.Result.Success(page, null);
         }
 
-        long lastSeenIdToReturn = page[^1];
+        long lastSeenIdToReturn = ids[^1];
+
+        transaction.Complete();
 
         return new GetFollowers.Result.Success(page, new PageToken(lastSeenIdToReturn));
     }

@@ -7,6 +7,7 @@ public class GetAllAccounts
 {
     public record Request(
         int PageSize,
+        long[]? Ids,
         Roles? Role,
         PageToken? PageToken);
 
