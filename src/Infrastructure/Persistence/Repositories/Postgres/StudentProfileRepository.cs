@@ -123,10 +123,14 @@ public class StudentProfileRepository : IStudentProfileRepository
     {
         const string sql = """
                            update student_profiles
-                           set nickname = coalesce(:new_nickname, nickname),
+                           set nickname = 
+                                   case
+                                       when :nickname_set = true then :new_nickname
+                                       else nickname
+                                   end,
                                profile_photo_url =
                                    case
-                                       when :photo_set = true then :photo_value
+                                       when :photo_set = true then :new_profile_photo_url
                                        else profile_photo_url
                                    end
                            where (account_id = :account_id)
@@ -135,6 +139,8 @@ public class StudentProfileRepository : IStudentProfileRepository
         var parameters = new List<NpgsqlParameter>
         {
             new NpgsqlParameter<long>("account_id", request.AccountId),
+            new NpgsqlParameter<bool>("nickname_set", request.Nickname.HasValue),
+            new NpgsqlParameter<string?>("new_nickname", request.Nickname.Value),
             new NpgsqlParameter<bool>("photo_set", request.ProfilePhotoUrl.HasValue),
             new NpgsqlParameter<string?>("new_profile_photo_url", request.ProfilePhotoUrl.Value),
         };

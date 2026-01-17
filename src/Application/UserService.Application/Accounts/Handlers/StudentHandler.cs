@@ -236,13 +236,6 @@ public class StudentHandler
             return new UpdateStudentProfile.Result.NicknameAlreadyExists();
         }
 
-        if (!request.ProfilePhotoUrl.HasValue)
-        {
-            transaction.Complete();
-
-            return new UpdateStudentProfile.Result.Success();
-        }
-
         var updateRequest = new UpdateStudentProfileRepositoryRequest(
             request.AccountId,
             request.Nickname,
