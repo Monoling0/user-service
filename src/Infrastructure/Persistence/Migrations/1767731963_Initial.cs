@@ -66,12 +66,6 @@ public class InitialMigration : IMigration
                                        now(),
                                        now()
                                    );
-                           
-                                   insert into student_profiles (account_id, nickname)
-                                   values (
-                                       currval('accounts_account_id_seq'),
-                                       'admin'
-                                   );
                                end if;
                            end $$;
                            """,

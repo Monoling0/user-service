@@ -5,5 +5,5 @@ namespace UserService.Application.Abstractions.Persistence.Requests;
 public record GetAllAccountsRepositoryRequest(
     int PageSize,
     long[]? Ids,
-    Roles? RoleCode,
+    Roles? Role,
     long? LastSeenId);

@@ -85,8 +85,9 @@ message GetPasswordHashResponse {
 message GetAllAccountsRequest {
   int32 page_size = 1;
   Ids ids = 2;
-  optional Role role = 3;
-  PageToken page_token = 4;
+  Role role = 3;
+  bool has_role = 4;
+  PageToken page_token = 5;
 }
 
 message Ids {

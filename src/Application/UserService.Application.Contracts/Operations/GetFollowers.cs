@@ -19,5 +19,7 @@ public class GetFollowers
             PageToken? PageToken) : Result;
 
         public sealed record InvalidPageSize : Result;
+
+        public sealed record AccountNotFound : Result;
     }
 }

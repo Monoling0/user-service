@@ -94,7 +94,8 @@ public class AccountRepository : IAccountRepository
                            select account_id, role, password_id, email, account_created_at, account_updated_at
                            from accounts
                            where (:ids is null or account_id = any(:ids))
-                               and (:last_seen_id is null or account_id > :last_seen_id)
+                             and (:role is null or role = :role)
+                             and (:last_seen_id is null or account_id > :last_seen_id)
                            order by account_id
                            limit :limit
                            """;
@@ -104,6 +105,7 @@ public class AccountRepository : IAccountRepository
             new NpgsqlParameter<long?>("last_seen_id", request.LastSeenId),
             new NpgsqlParameter<int>("limit", request.PageSize),
             new NpgsqlParameter<long[]?>("ids", request.Ids),
+            new NpgsqlParameter<Roles?>("role", request.Role),
         };
 
         await using NpgsqlConnection connection =

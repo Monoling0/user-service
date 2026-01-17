@@ -282,6 +282,10 @@ public class UserController : GrpcUserService.UserServiceBase
                 StatusCode.InvalidArgument,
                 $"Invalid page size")),
 
+            GetFollowers.Result.AccountNotFound _ => throw new RpcException(new Status(
+                StatusCode.NotFound,
+                "Followee not found")),
+
             _ => throw new UnreachableException(),
         };
     }
@@ -292,8 +296,8 @@ public class UserController : GrpcUserService.UserServiceBase
     {
         var updateAccountServerRequest = new UpdateAccount.Request(
             request.AccountId,
-            request.PasswordHash ?? default(Optional<string>),
-            request.Email ?? default(Optional<string>));
+            request.IsSetPasswordHash ? request.PasswordHash : default(Optional<string>),
+            request.IsSetEmail ? request.Email : default(Optional<string>));
 
         UpdateAccount.Result updateAccountServerResult = await _accountService.UpdateAccountAsync(
             updateAccountServerRequest,
@@ -325,7 +329,7 @@ public class UserController : GrpcUserService.UserServiceBase
     {
         var updateStudentProfileServerRequest = new UpdateStudentProfile.Request(
             request.AccountId,
-            request.Nickname ?? default(Optional<string>),
+            request.IsSetNickname ? request.Nickname : default(Optional<string>),
             request.IsSetProfilePhotoUrl ? request.ProfilePhotoUrl : default(Optional<string?>));
 
         UpdateStudentProfile.Result updateStudentProfileServerResult = await _accountService.UpdateStudentProfileAsync(

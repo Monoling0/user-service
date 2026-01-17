@@ -47,6 +47,7 @@ public static class Program
         builder.Services
             .AddPostgresMigrations()
             .AddPostgresRepositories()
+            .AddServiceHandlers()
             .AddServices();
 
         builder.Services.AddSingleton(_ =>
