@@ -60,7 +60,7 @@ public class StudentProfileRepository : IStudentProfileRepository
             : new StudentProfile(
                 AccountId: reader.GetInt64(0),
                 Nickname: reader.GetString(1),
-                ProfilePhotoUrl: reader.GetFieldValue<string?>(2));
+                ProfilePhotoUrl: reader.IsDBNull(2) ? null : reader.GetString(2));
     }
 
     public async IAsyncEnumerable<StudentProfile> GetAllStudentProfilesAsync(
